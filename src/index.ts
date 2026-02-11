@@ -4,6 +4,7 @@ import cors from "cors";
 
 import pool from "./config/db.js";
 import applicationRoutes from "./routes/application.routes.js";
+import companyRoutes from "./routes/company.routes.js";
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.get("/test-db", async (req, res) => {
 
 // Rotas da aplicação
 app.use("/api/applications", applicationRoutes);
+app.use("/api/companies", companyRoutes); 
 
 // Inicia o servidor
 app.listen(PORT, () => {
@@ -41,4 +43,5 @@ app.listen(PORT, () => {
   console.log(`   GET  http://localhost:${PORT}/test-db`);
   console.log(`   GET  http://localhost:${PORT}/api/applications`);
   console.log(`   POST http://localhost:${PORT}/api/applications`);
+  console.log(`   GET  http://localhost:${PORT}/api/companies`);
 });

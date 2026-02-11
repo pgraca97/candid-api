@@ -1,5 +1,5 @@
 {
-  "name": "job-tracker-api",
+  "name": "candid-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -7,6 +7,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch src/index.ts",
+    "dev:local": "docker compose up -d && pnpm dev",
     "studio": "drizzle-kit studio",
     "migrate": "tsx src/db/migrate.ts",
     "seed": "tsx src/db/seed.ts",
@@ -16,7 +17,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.27.0",
+  "packageManager": "pnpm@10.28.1",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",

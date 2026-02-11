@@ -3,12 +3,12 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Cria e configura o pool de conexões ao PostgreSQL
+const useSsl = process.env.PG_SSL === "true";
+
+// Cria e configura o pool de conexoes ao PostgreSQL
 const pool = new Pool({
   connectionString: process.env.DATABASE_PUBLIC_URL,
-  ssl: { 
-    rejectUnauthorized: false 
-  },
+  ssl: useSsl ? { rejectUnauthorized: false } : undefined,
 });
 
 export default pool;

@@ -4,17 +4,17 @@ import { applicationModel } from "../models/application.model.js";
 export const applicationController = {
   create: async (req: Request, res: Response) => {
     try {
-      const { company, position, status, notes } = req.body;
+      const { companyId, position, status, notes } = req.body;
 
       // Validação básica para já
-      if (!company || !position) {
+      if (!companyId || !position) {
         return res.status(400).json({
           error: "Company and position are required",
         });
       }
 
       const newApplication = await applicationModel.create({
-        company,
+        companyId,
         position,
         status,
         notes,
@@ -61,6 +61,9 @@ export const applicationController = {
       const { id } = req.params;
       const body = req.body;
 
+      console.log("Received update request for application ID:", id);
+      console.log("Request body:", body);
+
       //Verifica se o body não está vazio
       if (!body || Object.keys(body).length === 0) {
         return res.status(400).json({ error: "Request body is empty. Nothing to update." });
@@ -71,6 +74,8 @@ export const applicationController = {
       if (!existingApplication) {
         return res.status(404).json({ error: "Application not found. Nothing to update." });
       }
+
+      console.log("Existing application before update:", existingApplication);
 
       const updatedApplication = await applicationModel.update(Number(id), body);
 

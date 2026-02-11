@@ -1,23 +1,31 @@
-import { drizzle } from "drizzle-orm/node-postgres";
-import pool from "../config/db.js";
-import { applications } from "../db/schema.js";
-import { eq } from "drizzle-orm";
-
-const db = drizzle(pool);
+import { applications } from './../db/schema';
+import { asc, eq } from "drizzle-orm";
+import { db } from '../db';
 
 export const applicationModel = {
   create: async (data: {
-    company: string;
     position: string;
     status?: string;
     notes?: string;
+    companyId: number;
   }) => {
     const result = await db.insert(applications).values(data).returning();
     return result[0];
   },
 
   getAll: async () => {
-    return await db.select().from(applications);
+    return await db
+      .query.applications.findMany({
+        with: {
+          company: {
+            columns: {
+              id: true,
+              name: true,
+            }
+          }
+        },
+        orderBy: asc(applications.id),
+      });
   },
 
   getById: async (id: number) => {
@@ -29,11 +37,14 @@ export const applicationModel = {
   },
 
   update: async (id: number, data: Partial<{
-    company: string;
+    companyId: number;
     position: string;
     status: string;
     notes: string;
   }>) => {
+
+    console.log("Updating with data:", data);
+
     const result = await db
       .update(applications)
       .set(data) // Apenas os campos fornecidos em data serão atualizados
