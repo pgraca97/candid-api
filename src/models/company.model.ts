@@ -1,7 +1,7 @@
 import { log } from "console";
 import { db } from "../db";
 import { companies } from "../db/schema";
-import { ilike } from "drizzle-orm";
+import { ilike, eq } from "drizzle-orm";
 
 export const companyModel = {
 
@@ -22,11 +22,20 @@ export const companyModel = {
   getAll: async (searchQuery?: string) => {
     console.log("Search query in model:", searchQuery);
     return await db
-    .select({
-      id: companies.id,
-      name: companies.name
-    })
-    .from(companies)
-    .where(searchQuery ? ilike(companies.name, `%${searchQuery}%`) : undefined);
+      .select({
+        id: companies.id,
+        name: companies.name
+      })
+      .from(companies)
+      .where(searchQuery ? ilike(companies.name, `%${searchQuery}%`) : undefined);
+  },
+
+  getById: async (id: number) => {
+    const result = await db
+      .select()
+      .from(companies)
+      .where(eq(companies.id, id))
+
+    return result[0];
   }
 };

@@ -41,5 +41,21 @@ export const companyController = {
       console.error("Error fetching companies:", error);
       res.status(500).json({ error: "Failed to fetch companies" });
     }
+  },
+  getById: async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+
+      const company = await companyModel.getById(Number(id))
+
+      if (!company) {
+        return res.status(404).json({ error: "Company not found. Nothing to fetch" })
+      }
+
+      res.status(200).json(company)
+    } catch (error) {
+      console.error("Error fetching company by ID:", error)
+      res.status(500).json({ error: "Failed to fetch application" });
+    }
   }
 };
