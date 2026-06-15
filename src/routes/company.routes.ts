@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { companyController } from "../controllers/company.controller";
-import { cp } from "fs";
 
 const router = Router();
 
